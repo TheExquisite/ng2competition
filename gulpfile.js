@@ -3,6 +3,10 @@ var ts = require('gulp-typescript');
 var del = require('del');
 
 var tsProject = ts.createProject('./tsconfig.json');
+var node;
+var mongod;
+var spawn = require('child_process').spawn;
+var exec = require('child_process').exec;
 
 gulp.task('clean.client', function(cb) {
     del.sync('dist/client');
@@ -34,6 +38,29 @@ gulp.task('ts.compile', function(){
         .pipe(tsProject());
 
     return tsResult.js.pipe(gulp.dest('dist'));
+});
+
+gulp.task('mongod.start', function() {
+    mongod = exec('mongod --dbpath ./data', function(err,stdout,stderr){
+        console.log(stdout);
+        console.log(stderr);
+    });
+});
+
+gulp.task('node.start', function(){
+    if(node) node.kill();
+    node = spawn('node', ['dist/server.js'], {stdio: 'inherit'});
+    node.on('close', function(code) {
+        if( code === 8 ) {
+            gulp.log('Error detected, waiting for changes...')
+        }
+    });
+});
+
+gulp.task('serve', ['mongod.start', 'ts.compile', 'node.start', 'copy.html'], function(){
+    gulp.watch('**/*.ts', {cwd: 'src'}, ['ts.comple']);
+    gulp.watch(['client/**/*.html', 'client/**/*.css'], {cwd: 'src'}, ['copy.html']);
+    gulp.watch(['server.js', 'server/**/*.js'], {cwd: 'dist'}, ['node.start']);
 });
 
 gulp.task('build.all', ['clean.all', 'copy.nodemodules', 'copy.html', 'ts.compile']);
