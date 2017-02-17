@@ -58,7 +58,7 @@ gulp.task('node.start', function(){
 });
 
 gulp.task('serve', ['mongod.start', 'ts.compile', 'node.start', 'copy.html'], function(){
-    gulp.watch('**/*.ts', {cwd: 'src'}, ['ts.comple']);
+    gulp.watch('**/*.ts', {cwd: 'src'}, ['ts.compile']);
     gulp.watch(['client/**/*.html', 'client/**/*.css'], {cwd: 'src'}, ['copy.html']);
     gulp.watch(['server.js', 'server/**/*.js'], {cwd: 'dist'}, ['node.start']);
 });

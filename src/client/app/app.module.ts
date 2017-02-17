@@ -5,11 +5,29 @@ import {HttpModule}         from '@angular/http';
 
 import {AppComponent}       from './app.component';
 import {routing}            from './app.routing'
-import {DashboardComponent} from './dashboard.component';
+
+import {AppService}         from './app.service';
+
+import {DashboardComponent}     from './dashboard.component';
+import {SchoolComponent}        from './school.component';
+import {SchoolDetailsComponent} from './school-details.component';
 
 @NgModule({
-    imports: [BrowserModule, FormsModule, HttpModule, routing],
-    declarations: [AppComponent, DashboardComponent],
+    imports: [
+        BrowserModule,
+        FormsModule,
+        HttpModule,
+        routing
+             ],
+
+    declarations: [
+        AppComponent,
+        DashboardComponent, 
+        SchoolComponent,
+        SchoolDetailsComponent
+                  ],
+
+    providers: [AppService],
     bootstrap: [AppComponent]
 })
 

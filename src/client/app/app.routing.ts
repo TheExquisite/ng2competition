@@ -1,6 +1,8 @@
-import {Routes, RouterModule} from '@angular/router';
+import {Routes, RouterModule}   from '@angular/router';
 
-import {DashboardComponent} from './dashboard.component';
+import {DashboardComponent}     from './dashboard.component';
+import {SchoolComponent}        from './school.component';
+import {SchoolDetailsComponent}          from './school-details.component';
 
 const appRoutes: Routes = [
         {
@@ -11,6 +13,14 @@ const appRoutes: Routes = [
         {
             path: 'dashboard',
             component: DashboardComponent
+        },
+        {
+            path: 'school',
+            component: SchoolComponent
+        },
+        {
+            path: 'detail/:id',
+            component: SchoolDetailsComponent
         }
 ]
 
