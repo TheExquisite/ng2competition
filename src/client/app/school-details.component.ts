@@ -33,7 +33,7 @@ export class SchoolDetailsComponent implements OnInit {
         this.appService.newSchool(this.school)
         .then( resp => { this.goBack(); })
     }
-
+    
     ngOnInit(): void{
         if(this.route.params['id']){
         this.route.params

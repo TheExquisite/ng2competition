@@ -4,20 +4,41 @@ import {Router}             from '@angular/router';
 
 import {AppService}         from './app.service';
 
+interface school extends School {
+    selected: boolean;
+}
+
 @Component({
     selector: 'app-school',
     templateUrl: 'client/app/school.component.html',
     styleUrls: ['client/app/school.component.css']
 })
 export class SchoolComponent implements OnInit {
-    private schools: School[];
+    private schools: school[];
+    private editDisabled = true;
+    private deleteDisabled = true;
 
     constructor(private appService: AppService, private router: Router) { }
 
-    GetSchools(): void{
+    getSchools(): void{
         this.appService.getSchools()
-        .then(resq => this.schools = resq as School[])
+        .then(resq => this.schools = resq as school[])
         .catch(err => this.errorHandler(err));
+    }
+
+    schoolSelected_Clicked($index: number){
+        this.schools[$index].selected = !this.schools[$index].selected;
+        this.checkButtons();
+    }
+
+    checkButtons(): void{
+        this.editDisabled = true;
+        this.deleteDisabled = true;
+
+        let counter = this.schools.filter(school => school.selected === true).length
+
+        if(counter === 1) this.editDisabled = false;
+        if(counter > 0) this.deleteDisabled = false;
     }
 
     btnNew_Clicked(): void{
@@ -25,7 +46,7 @@ export class SchoolComponent implements OnInit {
     }
 
     ngOnInit(){
-        this.GetSchools();
+        this.getSchools();
     }
 
     private errorHandler(error:any){
