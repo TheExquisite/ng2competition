@@ -5,4 +5,4 @@ import { SchoolAPI } from '../api/school.api';
 
 export default function registerRoutes(app: Application): void{
     app.use('/api/schools', SchoolAPI.apiController() );
-}
+}   

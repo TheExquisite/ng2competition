@@ -7,7 +7,7 @@ import {School} from 'ng2Competition';
 
 @Injectable()
 export class AppService {
-    private schoolAPI = '/api/schools';
+    private schoolAPI = '/api/schools/';
 
     constructor( private http: Http){}
 
@@ -27,6 +27,15 @@ export class AppService {
         return this.http.post(this.schoolAPI, school)
         .toPromise()
         .then(resp => resp.json().data as School)
+        .catch(err => this.errorHandler(err));
+    }
+
+    deleteSchool(school: School): Promise<boolean>{
+        return this.http.delete(this.schoolAPI + school._id)
+        .toPromise()
+        .then(resp => {
+            if(resp.json().data === school._id) return true; else return false;
+        })
         .catch(err => this.errorHandler(err));
     }
 
